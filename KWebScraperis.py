@@ -2,13 +2,15 @@
 from requests_html import HTMLSession
 import gspread
 from datetime import date
-url = "https://jammi.lt/sauletekio-al-17-vilnius/top/kebabas-lavase"
+url = "https://jammi.lt/sauletekio-vilnius/kebabai-ir-buritai/kebabas-lavase"
 s = HTMLSession()
 r = s.get(url)
 r.html.render(sleep = 1)
-kaina = r.html.xpath('''//*[@id="app"]/div[2]/div/div/div/div/div[2]/form/div[8]/div[1]/div''', first = True )
+kaina = r.html.xpath('''//div[@class="price"]''', first = True )
 
-kaina = str(kaina.text)
+kaina = kaina.text.strip()
+print(kaina)
+
 data = str(date.today())
 gc = gspread.service_account(filename="creds.json") #upload a file with your credentials in json
 sh = gc.open("KebabuInfliacija").sheet1
